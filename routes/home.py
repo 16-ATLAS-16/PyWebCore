@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, flash, url_for, redirect
 
 bp = Blueprint('home', __name__, template_folder='../templates')
 
@@ -6,4 +6,12 @@ bp = Blueprint('home', __name__, template_folder='../templates')
 def homepage():
     return render_template('index.html')
 
+@bp.route('/success')
+def success():
+    flash('success!', 'success')
+    return redirect('/')
 
+@bp.route('/error')
+def error():
+    flash('error!', 'danger')
+    return redirect('/')

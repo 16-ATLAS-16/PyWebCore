@@ -2,6 +2,8 @@ from flask import Flask, send_from_directory
 import os
 
 app = Flask(__name__, static_folder='./static')
+app.secret_key = 'somesecret'
+
 for route in os.listdir('./routes'):
     if route.endswith('.py'):
         routeName = route.strip('.py')
