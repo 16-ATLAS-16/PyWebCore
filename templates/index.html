@@ -3,8 +3,14 @@
 
 {% block content %}
 <div>
+    {% set nav_items = [('home', 'home.homepage')] %}
+    {% include './components/navbar.jinja' %}
     <!-- Content -->
-     <span class="my-4">Hello World!</span>
+     <div class="text-left">
+        <img src="../static/favicon.ico" alt="Python Logo!" style="max-width: 5rem; max-height: 5rem;">
+        <span class="my-4">Hello World!</span>
+     </div>
+     <br>
      <a href="{{ url_for('home.success') }}">Success</a>
      <a href="{{ url_for('home.error') }}">Error</a>
 

@@ -1,0 +1,9 @@
+<div class="topnav">
+    {% if nav_items %}
+        {% for name, url in nav_items %}
+           {% set classes = 'class="active"' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) %}
+           {% set uri = url_for(url) %}
+           <a {{classes}} href="{{uri}}">{{name}}</a>
+        {% endfor %}
+    {% endif %}
+</div>
