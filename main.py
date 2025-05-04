@@ -1,8 +1,11 @@
 from flask import Flask, send_from_directory
-import os
+import os, configparser
+
+config = configparser.ConfigParser()
+settings = config.read('main.config')
 
 app = Flask(__name__, static_folder='./static')
-app.secret_key = 'somesecret'
+app.secret_key = settings['app_config']['secret']
 
 for route in os.listdir('./routes'):
     if route.endswith('.py'):
@@ -17,4 +20,7 @@ def favicon():
                                'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 app.config['TEMPLATES_AUTO_RELOAD'] = True
-app.run()
+app.run(
+    host=settings['app_config']['host'],
+    port=settings['app_config']['port']
+)
