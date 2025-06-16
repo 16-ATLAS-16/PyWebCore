@@ -1,20 +1,46 @@
-<nav class="navbar navbar-expand-lg navbar-light col-9 mx-auto">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+<nav class="navbar navbar-expand-lg navbar-light mx-auto">
+    <div class="container-fluid col-5">
+        <a class="navbar-brand" href="#">
+            <img src="../../static/favicon.ico" width="30px" height="30px">
+            PyWeb
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-        {% if nav_items %}
-            {% for name, url in nav_items %}
-            {% set classes = 'class="nav-link active"' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) else 'class="nav-link"' %}
-            {% set uri = url_for(url) %}
-            <li class="nav-item">
-                <a {{classes}} href="{{uri}}">{{name}}</a>
-            </li>
-            {% endfor %}
-        {% endif %}
-        </ul>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+
+            {% if nav_items %} 
+                {% set categories, routes = nav_items %}
+                {% for category in categories %}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id={{category.NAME}} role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{category.NAME}}
+                        </a>
+
+                        <div class="dropdown-menu" aria-labelledby={{category.NAME}}>
+                        {% for name, url in category.get_navbar_routes() %}
+                            {% set activeToggle = 'active' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) else '' %}
+                            <a class="dropdown-item" href={{url_for(url)}}>{{name}}</a>
+                        {% endfor %}
+                        </div>
+                    </li>
+
+                {% endfor %}
+
+                {% for name, url in routes %}
+                    <!-- route handling goes here -->
+                
+                {% set uri = url_for(url) %}
+                {% set activeToggle = 'active' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) else '' %}
+                <li class="nav-item">
+                    <a class="nav-link {{activeToggle}}" href="{{uri}}">{{name}}</a>
+                </li>
+                {% endfor %}
+            {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>

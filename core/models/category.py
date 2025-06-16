@@ -22,3 +22,5 @@ class Category:
         if route in self.routes:
             self.routes.remove(route)
         
+    def get_navbar_routes(self) -> list[str, str]:
+        return [route.get_navbar_representation() for route in self.routes]

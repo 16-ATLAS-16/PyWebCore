@@ -8,7 +8,7 @@ class Navigations:
     role_restrictions: list[dict] = []
     routes: list[Route] = []
     navbarVisibleRoutes: list[Route] = []
-    navbarCategories: list[tuple[str, list[Route]]] = []
+    navbarCategories: list[Category] = []
 
     def __init__(self, role_restrictions : list = None, routes: list[Blueprint] = [], **configs):
         self.role_restrictions = self.parse_restrictions(role_restrictions) if role_restrictions else []
@@ -75,7 +75,7 @@ class Navigations:
         """
 
         routeBuffer: list[tuple[int, Blueprint]] = [(len(list(filter(lambda x: x.strip(), route.url_prefix.split('/') if route.url_prefix else ''))), route) for route in blueprints]
-        routeBuffer.sort()
+        routeBuffer.sort(key=lambda sorter: sorter[0])
 
         for parentCount, route in routeBuffer:
 
@@ -85,6 +85,16 @@ class Navigations:
             self.routes.append(Route(route.name, prefix, parentRoute))
             if hasattr(route, 'navbar_visible'):
                 self.navbarVisibleRoutes.append(self.routes[-1])
+
+                if hasattr(route, 'navbar_category'):
+                    if all([category.NAME != route.navbar_category for category in self.navbarCategories]):
+                        self.navbarCategories.append(Category(route.navbar_category, [self.routes[-1]]))
+
+                    else:
+                        for category in self.navbarCategories:
+                            if category.NAME == route.navbar_category:
+                                category.add_route(self.routes[-1])
+                
 
             route.url_prefix = '/' + prefix
             print(f"Registered route: {route.name} with parent {parentRoute.NAME if parentRoute else 'None'}")
@@ -121,14 +131,14 @@ class Navigations:
             
         return None
     
-    def find_route_category(self, route: Route) -> Category | None:
-        pass
+    def find_route_categories(self, route: Route) -> list[Category] | None:
+        return [category for category in self.navbarCategories if route in category.routes]
     
     def get_navbar(self) -> list[tuple[str, str]]:
         """
         Returns navbar items.
         Future improvements will see this function return differently based on session data.
         """
-        return ([route.get_navbar_representation() for route in self.navbarVisibleRoutes if not self.find_route_category(route)])
+        return (self.navbarCategories, [route.get_navbar_representation() for route in self.navbarVisibleRoutes if not self.find_route_categories(route)])
 
 GLOBAL_NAVMANAGER = Navigations()
