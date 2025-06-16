@@ -13,6 +13,8 @@
     {% endblock %}
 </head>
 <body>
+    {% set nav_items = nav.get_navbar() %}
+    {% include './components/navbar.jinja' %}
     {% with messages = get_flashed_messages(with_categories=True) %}
         {% if messages %}
             <div class="flashes px-5 mx-auto col-9">
@@ -25,8 +27,9 @@
             </div>
         {% endif %}
     {% endwith %}
-
+    <div class="px-5 col-9 mx-auto mb-3">
     {% block content %}
     {% endblock %}
+    </div>
 </body>
 </html>

@@ -1,10 +1,10 @@
 from flask import Blueprint, render_template, flash, url_for, redirect
 
 bp = Blueprint('home', __name__, template_folder='../templates')
-
+bp.navbar_visible = True
 
 @bp.route('/')
-def homepage():
+def home():
     return render_template('index.html')
 
 @bp.route('/success')

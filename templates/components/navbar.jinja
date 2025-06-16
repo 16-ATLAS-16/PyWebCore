@@ -1,9 +1,20 @@
-<div class="topnav">
-    {% if nav_items %}
-        {% for name, url in nav_items %}
-           {% set classes = 'class="active"' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) %}
-           {% set uri = url_for(url) %}
-           <a {{classes}} href="{{uri}}">{{name}}</a>
-        {% endfor %}
-    {% endif %}
-</div>
+<nav class="navbar navbar-expand-lg navbar-light col-9 mx-auto">
+    <a class="navbar-brand" href="#">Navbar</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        {% if nav_items %}
+            {% for name, url in nav_items %}
+            {% set classes = 'class="nav-link active"' if url_for(request.endpoint, **request.view_args) == url_for(url, **request.view_args) else 'class="nav-link"' %}
+            {% set uri = url_for(url) %}
+            <li class="nav-item">
+                <a {{classes}} href="{{uri}}">{{name}}</a>
+            </li>
+            {% endfor %}
+        {% endif %}
+        </ul>
+    </div>
+</nav>
