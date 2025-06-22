@@ -23,8 +23,8 @@
     background-color: steelblue;
 }
 
-.dropdown-content a:hover {background-color: #ddd;}
-
-.dropdown:hover .dropdown-content {display: block;}
-
-.dropdown:hover .dropbtn {background-color: #3e8e41;}
+.dropdown-item.active, .dropdown-item:active {
+    background-color: transparent;
+    color: black;
+    font-weight: bold;
+}
