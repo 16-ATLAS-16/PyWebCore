@@ -1,0 +1,16 @@
+# This is a template for how your config files should look.
+
+[defaults] 
+
+role_location = ./core/roles.config
+
+[app_config]
+
+host = 127.0.0.1
+port = 5000
+secret = somesecret
+
+[db_config]
+
+SUPABASE_URL = <use your own URL>
+SUPABASE_KEY = <use your own KEY>
