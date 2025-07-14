@@ -31,3 +31,5 @@ class RoleManager:
                 return role
         
         return None
+    
+GLOBAL_ROLEMANAGER = RoleManager()

@@ -4,6 +4,9 @@
 {% block content %}
 <div>
     <!-- Content -->
+     {% if 'noSess' in value.keys() %}
+         <span>NO SESSION!</span>
+      {% endif %}
      <div class="text-left">
         <img src="../static/favicon.ico" alt="Python Logo!" style="max-width: 5rem; max-height: 5rem;">
         <span class="my-4">Hello World!</span>
@@ -13,4 +16,4 @@
      <a href="{{ url_for('home.error') }}">Error</a>
 
 </div>
-{% endblock %}
+{% endblock %} 

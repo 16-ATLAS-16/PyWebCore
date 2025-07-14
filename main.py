@@ -1,7 +1,8 @@
-from flask import Flask, send_from_directory, Blueprint
+from flask import Flask, send_from_directory, Blueprint, session
 import os, configparser
 import core.navigation as Navigation
 from core.role_manager import RoleManager
+from core.models.user import User
 
 config = configparser.ConfigParser()
 config.read(['main.config'])
@@ -22,7 +23,9 @@ def favicon():
 def appNavManager():
     return {'nav' : Navigation.GLOBAL_NAVMANAGER}
 
+
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Strict'
 app.run(
     host=config['app_config']['host'],
     port=config['app_config']['port']
