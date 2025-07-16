@@ -1,12 +1,16 @@
 # A simple session manager.
-from flask import Response, session, redirect
+from flask import Response, session, redirect, request
 import uuid, datetime
 
 class Session:
     SID: uuid.UUID = uuid.uuid4() 
     expires: datetime = datetime.datetime.now() + datetime.timedelta(minutes=30)
     grace: datetime = expires + datetime.timedelta(seconds=30)
+    ownerIP: str
     __data: dict = {}
+
+    def __init__(self, ownerIP):
+        self.ownerIP = ownerIP
 
     def __getitem__(self, name):
         return self.__data[name]
@@ -29,7 +33,7 @@ class SessionManager:
         Creates a new, empty session with a unique SID and returns it.
         """
 
-        self.__sessionList.append(Session())
+        self.__sessionList.append(Session(request.remote_addr))
         return self.__sessionList[-1]
     
     def deleteSession(self, session: str | uuid.UUID | Session) -> None:
@@ -65,10 +69,13 @@ class SessionManager:
         """
 
         if 'sid' not in session.keys():
-            return redirect('/login')
+            session['sid'] = self.createSession().SID
+
+        elif request.remote_addr != self[session['sid']].ownerIP:
+            return None
         
         else: 
-            return None
+            return self[session['sid']]
         
     def __getitem__(self, sid) -> Session:
 
